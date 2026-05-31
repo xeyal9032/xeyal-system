@@ -50,3 +50,6 @@ coverage/
 # Arşivler
 *.zip
 *.tar.gz
+
+# Ekran kaydı ara kareleri (demo.gif repoda tutulur)
+docs/assets/frames/*.png

@@ -28,7 +28,7 @@ describe('Xeyal Cloud Core API Tests', () => {
     test('Health Check should return 200', async () => {
         const res = await request(app).get('/health');
         expect(res.statusCode).toBe(200);
-        expect(res.body.status).toBe('UP');
+        expect(res.body.status).toBe('ok');
     });
 
     test('Error Ingestion should fail without API Key', async () => {

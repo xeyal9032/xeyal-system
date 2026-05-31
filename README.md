@@ -62,7 +62,9 @@
 
 ### 🌐 Cloud Dashboard — Canlı Hata Monitörü
 
-<img src="docs/assets/dashboard-preview.svg" alt="Xeyal Cloud Dashboard" width="100%"/>
+<p align="center">
+  <img src="docs/assets/dashboard-preview.png" alt="Xeyal Cloud Dashboard" width="92%"/>
+</p>
 
 > Glassmorphism tasarımlı React paneli: canlı hata akışı, AI analiz sonuçları, auto-patch simülasyonu ve cluster durumu.
 
@@ -70,23 +72,31 @@
 
 ### 🖥️ Tauri Masaüstü — Forge AI Studio
 
-<img src="docs/assets/desktop-preview.svg" alt="Xeyal Desktop App" width="100%"/>
+<p align="center">
+  <img src="docs/assets/desktop-preview.png" alt="Xeyal Desktop App" width="92%"/>
+</p>
 
 > Yerel Ollama entegrasyonu, AI ajan yönetimi, terminal çıktısı ve otonom proje oluşturma arayüzü.
 
 <br/>
 
+### ⚡ my-system Web Dashboard
+
+<p align="center">
+  <img src="docs/assets/mysystem-dashboard.png" alt="my-system Dashboard" width="92%"/>
+</p>
+
+> Socket.IO destekli canlı metrik paneli — port izleme, servis durumu ve otonom log akışı.
+
+<br/>
+
 ### 🎬 Demo
 
-> Gerçek ekran kaydı eklemek için `docs/assets/demo.gif` veya `docs/assets/demo.mp4` dosyasını repoya yükleyin.
+<p align="center">
+  <img src="docs/assets/demo.gif" alt="Xeyal System Demo" width="92%"/>
+</p>
 
-<!-- GIF eklendiğinde aşaıdaki satırın yorumunu kaldırın:
-<img src="docs/assets/demo.gif" alt="Xeyal System Demo" width="100%"/>
--->
-
-<!-- Video eklendiğinde:
-https://github.com/user-attachments/assets/VIDEO_ID
--->
+> Dashboard sekmeleri, my-system paneli ve Forge UI — gerçek uygulama ekran kaydı.
 
 <table align="center">
 <tr>

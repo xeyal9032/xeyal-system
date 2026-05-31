@@ -1,0 +1,13 @@
+file 'frame-01-overview.png'
+duration 2.5
+file 'frame-02-cloud.png'
+duration 2.5
+file 'frame-03-ai-agents.png'
+duration 2.5
+file 'frame-04-error-logs.png'
+duration 2.5
+file 'frame-desktop-dash.png'
+duration 2.5
+file 'frame-forge-ui.png'
+duration 2.5
+file 'frame-forge-ui.png'
