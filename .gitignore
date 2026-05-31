@@ -1,0 +1,52 @@
+# Ortam ve gizli dosyalar
+.env
+.env.*
+!.env.example
+
+# Bağımlılıklar
+node_modules/
+jspm_packages/
+.pnp/
+.pnp.js
+
+# Derleme çıktıları
+dist/
+build/
+target/
+*.exe
+*.msi
+
+# Loglar ve geçici dosyalar
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Tauri / Rust
+my-system/desktop-app/src-tauri/target/
+
+# Yedekler ve scratch
+my-system/backups/
+my-system/scratch/
+my-system/logs/
+
+# Test / cache
+coverage/
+.nyc_output/
+.cache/
+
+# Arşivler
+*.zip
+*.tar.gz

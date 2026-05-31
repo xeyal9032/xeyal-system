@@ -1,0 +1,10 @@
+{
+  "autopilot": true,
+  "stats": {
+    "totalFixes": 48,
+    "commonErrors": {
+      "MISSING_DEP": 48
+    }
+  },
+  "lastSession": null
+}

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" fill="none">
+  <defs>
+    <linearGradient id="win-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#1a1f2e"/><stop offset="1" stop-color="#0d1117"/>
+    </linearGradient>
+    <linearGradient id="forge-g" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#06b6d4"/><stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  <!-- Window chrome -->
+  <rect width="960" height="600" rx="14" fill="url(#win-bg)" stroke="rgba(255,255,255,0.1)"/>
+  <rect x="0" y="0" width="960" height="36" rx="14" fill="rgba(0,0,0,0.4)"/>
+  <circle cx="24" cy="18" r="6" fill="#ef4444"/>
+  <circle cx="44" cy="18" r="6" fill="#eab308"/>
+  <circle cx="64" cy="18" r="6" fill="#22c55e"/>
+  <text x="480" y="23" text-anchor="middle" font-family="system-ui" font-size="12" fill="#94a3b8">Xeyal-System · Tauri Desktop</text>
+  <!-- Title -->
+  <text x="480" y="80" text-anchor="middle" font-family="system-ui" font-size="32" font-weight="800" fill="url(#forge-g)">¡ FORGE AI STUDIO</text>
+  <text x="480" y="110" text-anchor="middle" font-family="system-ui" font-size="14" fill="#64748b">Otonom proje olu_turma · Yerel Ollama · Swarm ajanlar1</text>
+  <!-- Agent cards -->
+  <rect x="40" y="140" width="200" height="120" rx="12" fill="rgba(6,182,212,0.08)" stroke="rgba(6,182,212,0.3)"/>
+  <text x="60" y="170" font-family="system-ui" font-size="13" font-weight="600" fill="#06b6d4">> Coder-Pro</text>
+  <text x="60" y="195" font-family="system-ui" font-size="11" fill="#94a3b8">Full-stack kod üretimi</text>
+  <rect x="60" y="210" width="80" height="24" rx="12" fill="rgba(34,197,94,0.2)"/>
+  <text x="100" y="226" text-anchor="middle" font-family="system-ui" font-size="10" fill="#22c55e">ACTIVE</text>
+  <rect x="260" y="140" width="200" height="120" rx="12" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)"/>
+  <text x="280" y="170" font-family="system-ui" font-size="13" font-weight="600" fill="#8b5cf6">=á Guardian</text>
+  <text x="280" y="195" font-family="system-ui" font-size="11" fill="#94a3b8">Güvenlik &amp; lint taramas1</text>
+  <rect x="280" y="210" width="80" height="24" rx="12" fill="rgba(34,197,94,0.2)"/>
+  <text x="320" y="226" text-anchor="middle" font-family="system-ui" font-size="10" fill="#22c55e">ACTIVE</text>
+  <rect x="480" y="140" width="200" height="120" rx="12" fill="rgba(236,72,153,0.08)" stroke="rgba(236,72,153,0.3)"/>
+  <text x="500" y="170" font-family="system-ui" font-size="13" font-weight="600" fill="#ec4899">=' Fixer-Bot</text>
+  <text x="500" y="195" font-family="system-ui" font-size="11" fill="#94a3b8">Otomatik hata onar1m1</text>
+  <rect x="500" y="210" width="80" height="24" rx="12" fill="rgba(251,191,36,0.2)"/>
+  <text x="540" y="226" text-anchor="middle" font-family="system-ui" font-size="10" fill="#eab308">IDLE</text>
+  <rect x="700" y="140" width="220" height="120" rx="12" fill="rgba(34,197,94,0.08)" stroke="rgba(34,197,94,0.3)"/>
+  <text x="720" y="170" font-family="system-ui" font-size="13" font-weight="600" fill="#22c55e"><× Architect</text>
+  <text x="720" y="195" font-family="system-ui" font-size="11" fill="#94a3b8">Proje iskeleti &amp; _ablon</text>
+  <rect x="720" y="210" width="80" height="24" rx="12" fill="rgba(34,197,94,0.2)"/>
+  <text x="760" y="226" text-anchor="middle" font-family="system-ui" font-size="10" fill="#22c55e">ACTIVE</text>
+  <!-- Terminal -->
+  <rect x="40" y="290" width="880" height="280" rx="12" fill="#0d1117" stroke="rgba(255,255,255,0.08)"/>
+  <text x="60" y="320" font-family="Consolas, monospace" font-size="12" fill="#64748b">$ npx xeyal-system dev</text>
+  <text x="60" y="345" font-family="Consolas, monospace" font-size="12" fill="#22c55e"> Framework detected: Next.js 15</text>
+  <text x="60" y="370" font-family="Consolas, monospace" font-size="12" fill="#22c55e"> Dependencies installed (847 packages)</text>
+  <text x="60" y="395" font-family="Consolas, monospace" font-size="12" fill="#22c55e"> Port 3000 cleared · Service started</text>
+  <text x="60" y="420" font-family="Consolas, monospace" font-size="12" fill="#06b6d4">>à Ollama: llama3 ready · Dashboard :3000</text>
+  <text x="60" y="445" font-family="Consolas, monospace" font-size="12" fill="#8b5cf6">> Swarm: 3 agents online · Watching files...</text>
+  <text x="60" y="480" font-family="Consolas, monospace" font-size="12" fill="#94a3b8">  [AUTOPILOT] Null check suggested in api/users.js:42</text>
+  <text x="60" y="505" font-family="Consolas, monospace" font-size="12" fill="#94a3b8">  [HEALER] Project health: 98% · 0 critical issues</text>
+  <rect x="60" y="530" width="8" height="16" fill="#06b6d4" opacity="0.8">
+    <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+  </rect>
+</svg>

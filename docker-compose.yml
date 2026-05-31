@@ -1,0 +1,39 @@
+services:
+  # Database
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: xeyal_admin
+      POSTGRES_PASSWORD: secure_password_123
+      POSTGRES_DB: xeyal_cloud
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./xeyal-cloud/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    ports:
+      - "5432:5432"
+
+  # Backend API
+  backend:
+    build: ./xeyal-cloud
+    restart: always
+    ports:
+      - "4000:4000"
+    environment:
+      DATABASE_URL: postgres://xeyal_admin:secure_password_123@db:5432/xeyal_cloud
+      PORT: 4000
+      OLLAMA_URL: http://host.docker.internal:11434/api/generate
+    depends_on:
+      - db
+
+  # Dashboard UI
+  dashboard:
+    build: ./xeyal-dashboard
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

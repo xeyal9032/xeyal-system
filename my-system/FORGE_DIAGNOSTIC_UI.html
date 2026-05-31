@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Forge Intelligence Diagnostic Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7000ff;
+            --secondary: #00d4ff;
+            --bg: #050508;
+            --card: rgba(20, 20, 30, 0.7);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% 50%, #100030 0%, #050508 100%);
+        }
+
+        .container { max-width: 1200px; margin: 40px auto; padding: 20px; }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-online { background: rgba(0, 255, 150, 0.2); color: #00ff96; }
+        .status-offline { background: rgba(255, 50, 50, 0.2); color: #ff3232; }
+
+        pre {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            max-height: 300px;
+            border: 1px solid rgba(255,255,255,0.05);
+            color: #ccc;
+        }
+
+        .log-list {
+            list-style: none;
+        }
+
+        .log-item {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.9rem;
+        }
+
+        .log-time { color: rgba(255,255,255,0.4); margin-right: 10px; font-family: monospace; }
+        .log-msg.error { color: #ff3232; }
+        .log-msg.success { color: #00ff96; }
+
+        .btn {
+            background: linear-gradient(45deg, var(--primary), #a000ff);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(112, 0, 255, 0.4); }
+
+        .template-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .template-tag {
+            background: rgba(255,255,255,0.05);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+        }
+
+        .stat-item { margin-bottom: 10px; }
+        .arch-desc { font-size: 0.8rem; opacity: 0.6; margin-bottom: 10px; }
+        .full-width { grid-column: span 2; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Forge Diagnostic Panel</h1>
+            <p>Intelligence Tracking & Core Analysis System</p>
+        </header>
+
+        <div class="grid">
+            <!-- Environment Probe -->
+            <div class="card">
+                <h2>📡 Environment Probe</h2>
+                <div id="env-stats">
+                    <p class="stat-item">Ollama API: <span id="ollama-status" class="status-badge">Checking...</span></p>
+                    <p class="stat-item">Templates Found: <span id="templates-count" class="status-badge">0</span></p>
+                    <p class="stat-item">FS Permission: <span id="fs-status" class="status-badge">Checking...</span></p>
+                </div>
+                <div class="template-list" id="template-tags"></div>
+                <button class="btn" onclick="runDiagnosis()">Run Full Analysis</button>
+            </div>
+
+            <!-- Laravel Rules -->
+            <div class="card">
+                <h2>🛠️ Laravel Arch Requirements</h2>
+                <p class="arch-desc">Active prompt injected when 'Laravel Arch' is checked:</p>
+                <pre id="laravel-rules">Awaiting analysis...</pre>
+            </div>
+
+            <!-- AI Intelligence Trace -->
+            <div class="card full-width">
+                <h2>🧠 Intelligence Trace Logs</h2>
+                <div class="log-list" id="diag-logs">
+                    <div class="log-item"><span class="log-time">[SYSTEM]</span> Ready to track Forge execution.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function runDiagnosis() {
+            const logs = document.getElementById('diag-logs');
+            const addLog = (msg, type = '') => {
+                const item = document.createElement('div');
+                item.className = 'log-item';
+                item.innerHTML = `<span class="log-time">${new Date().toLocaleTimeString()}</span> <span class="log-msg ${type}">${msg}</span>`;
+                logs.prepend(item);
+            };
+
+            addLog('Starting Forge Intelligence scan...', 'success');
+
+            try {
+                const res = await fetch('/api/diagnose');
+                const data = await res.json();
+
+                // Update UI
+                const ollamaStatus = document.getElementById('ollama-status');
+                ollamaStatus.textContent = data.environment.ollama_status;
+                ollamaStatus.className = 'status-badge ' + (data.environment.ollama_status === 'ONLINE' ? 'status-online' : 'status-offline');
+
+                document.getElementById('templates-count').textContent = data.environment.templates_found;
+                
+                const fsStatus = document.getElementById('fs-status');
+                fsStatus.textContent = data.environment.fs_write_permission;
+                fsStatus.className = 'status-badge ' + (data.environment.fs_write_permission === 'OK' ? 'status-online' : 'status-offline');
+
+                document.getElementById('laravel-rules').textContent = data.arch_rules.laravel;
+
+                const tagContainer = document.getElementById('template-tags');
+                tagContainer.innerHTML = (data.environment.template_files || []).map(f => `<span class="template-tag">${f}</span>`).join('');
+
+                if (data.forge_probes.length > 0) {
+                    data.forge_probes.forEach(p => addLog(`[${p.type}] ${p.msg}`, p.type === 'CRITICAL' ? 'error' : ''));
+                } else {
+                    addLog('All core connectivity checks passed.', 'success');
+                }
+
+                addLog(`Found ${data.environment.templates_found} extra templates loading.`, 'success');
+
+            } catch (e) {
+                addLog('Diagnosis failed: ' + e.message, 'error');
+            }
+        }
+
+        // Initial run
+        window.onload = runDiagnosis;
+    </script>
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xeyal-System | Quantum Deep Analyser</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050508;
+            --card: rgba(15, 15, 25, 0.7);
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --success: #00ff88;
+            --danger: #ff0055;
+            --warning: #ffcc00;
+            --text: #e0e0f0;
+            --text-dim: #9090b0;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(112, 0, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(0, 242, 255, 0.05) 0%, transparent 40%);
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .status-pill {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 10px var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--card);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(to right, transparent, var(--primary), transparent);
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .card:hover::before { opacity: 1; }
+
+        h2 { font-size: 1.2rem; margin-bottom: 20px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-label { color: var(--text-dim); font-size: 0.9rem; }
+        .stat-value { font-weight: 600; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; }
+
+        .status-ok { color: var(--success); }
+        .status-err { color: var(--danger); }
+        .status-warn { color: var(--warning); }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border-radius: 14px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; }
+        .btn-primary:hover { filter: brightness(1.2); transform: scale(1.02); }
+
+        .btn-outline { background: var(--glass); color: white; border: 1px solid var(--border); }
+        .btn-outline:hover { background: rgba(255, 255, 255, 0.1); }
+
+        .log-panel {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            height: 300px;
+            overflow-y: auto;
+            color: #a0a0c0;
+        }
+
+        .log-entry { margin-bottom: 5px; }
+        .log-time { color: #505070; }
+        .log-sys { color: var(--primary); }
+        .log-succ { color: var(--success); }
+
+        /* Scanned Files List */
+        .file-list { max-height: 200px; overflow-y: auto; font-size: 0.8rem; }
+        .file-item { display: flex; justify-content: space-between; padding: 5px 0; }
+
+        #progress-bar-container {
+            width: 100%;
+            height: 4px;
+            background: var(--glass);
+            margin-bottom: 30px;
+            border-radius: 2px;
+            display: none;
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+            transition: 0.3s;
+        }
+
+        .quantum-orb {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+            top: -300px;
+            right: -300px;
+            opacity: 0.1;
+            z-index: -1;
+            filter: blur(80px);
+        }
+    </style>
+</head>
+<body>
+    <div class="quantum-orb"></div>
+    <div class="container">
+        <header>
+            <div class="logo">XEYAL SYSTEM // QUANTUM PROBE</div>
+            <div class="status-pill">
+                <div class="pulse"></div>
+                ANALYSER ONLINE: PORT 9999
+            </div>
+        </header>
+
+        <div id="progress-bar-container">
+            <div id="progress-bar"></div>
+        </div>
+
+        <div class="grid">
+            <!-- Core Integrity -->
+            <div class="card">
+                <h2>🏛️ Core Integrity</h2>
+                <div id="core-stats" class="file-list">
+                    <div class="stat-item"><span class="stat-label">Initialising...</span></div>
+                </div>
+            </div>
+
+            <!-- AI Engine -->
+            <div class="card">
+                <h2>🧠 AI Cognitive Hub</h2>
+                <div id="ai-stats">
+                    <div class="stat-item"><span class="stat-label">Ollama:</span> <span class="stat-value" id="ollama-status">WAITING</span></div>
+                    <div class="stat-item"><span class="stat-label">Latency:</span> <span class="stat-value" id="ai-latency">0ms</span></div>
+                    <div class="stat-item"><span class="stat-label">Models:</span> <span class="stat-value" id="ai-models">0</span></div>
+                </div>
+            </div>
+
+            <!-- Network & Services -->
+            <div class="card">
+                <h2>📡 Network Grid</h2>
+                <div id="network-stats">
+                    <div class="stat-item"><span class="stat-label">Port 3000:</span> <span class="stat-value" id="port-3000">---</span></div>
+                    <div class="stat-item"><span class="stat-label">Port 4000:</span> <span class="stat-value" id="port-4000">---</span></div>
+                    <div class="stat-item"><span class="stat-label">Port 11434:</span> <span class="stat-value" id="port-11434">---</span></div>
+                </div>
+            </div>
+
+            <!-- System Metrics -->
+            <div class="card">
+                <h2>🦾 System Metrics</h2>
+                <div id="system-stats">
+                    <div class="stat-item"><span class="stat-label">OS:</span> <span class="stat-value" id="sys-os">Scanning...</span></div>
+                    <div class="stat-item"><span class="stat-label">CPU:</span> <span class="stat-value" id="sys-cpu">Scanning...</span></div>
+                    <div class="stat-item"><span class="stat-label">RAM:</span> <span class="stat-value" id="sys-ram">Scanning...</span></div>
+                </div>
+            </div>
+        </div>
+
+        <h2>🕵️ Audit Logs</h2>
+        <div class="log-panel" id="logs">
+            <div class="log-entry"><span class="log-time">[${new Date().toLocaleTimeString()}]</span> <span class="log-sys">SYSTEM</span> Quantum Probe initialized. Ready for deep scan.</div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="runFullAudit()">🚀 Run Deep Audit</button>
+            <button class="btn btn-outline" onclick="triggerHeal()">🩺 Autonomous Heal</button>
+        </div>
+    </div>
+
+    <script>
+        function log(msg, type = 'sys') {
+            const logs = document.getElementById('logs');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            const time = new Date().toLocaleTimeString();
+            entry.innerHTML = `<span class="log-time">[${time}]</span> <span class="log-${type}">${type.toUpperCase()}</span> ${msg}`;
+            logs.appendChild(entry);
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        async function runFullAudit() {
+            const pb = document.getElementById('progress-bar');
+            const pbc = document.getElementById('progress-bar-container');
+            pbc.style.display = 'block';
+            pb.style.width = '10%';
+            
+            log('Starting deep system audit...', 'sys');
+            
+            try {
+                pb.style.width = '30%';
+                const res = await fetch('/api/audit');
+                const data = await res.json();
+                pb.style.width = '70%';
+                
+                // Update Core
+                const coreList = document.getElementById('core-stats');
+                coreList.innerHTML = data.core.map(f => `
+                    <div class="file-item">
+                        <span>${f.name}</span>
+                        <span class="${f.status === 'OK' ? 'status-ok' : 'status-err'}">${f.status}</span>
+                    </div>
+                `).join('');
+                log('Core integrity scan complete.', 'succ');
+
+                // Update AI
+                document.getElementById('ollama-status').textContent = data.ai.status;
+                document.getElementById('ollama-status').className = 'stat-value ' + (data.ai.status === 'ONLINE' ? 'status-ok' : 'status-err');
+                document.getElementById('ai-latency').textContent = data.ai.latency + 'ms';
+                document.getElementById('ai-models').textContent = data.ai.models.length;
+                log(`AI Cognitive Hub verified. Found ${data.ai.models.length} models.`, 'succ');
+
+                // Update Network
+                data.network.forEach(n => {
+                    const el = document.getElementById('port-' + n.port);
+                    if (el) {
+                        el.textContent = n.status;
+                        el.className = 'stat-value ' + (n.status === 'ACTIVE' ? 'status-ok' : 'status-warn');
+                    }
+                });
+                log('Network grid mapping successful.', 'succ');
+
+                // Update System
+                document.getElementById('sys-os').textContent = data.system.os;
+                document.getElementById('sys-cpu').textContent = data.system.cpu;
+                document.getElementById('sys-ram').textContent = data.system.ram;
+                log('Hardware metrics synchronised.', 'succ');
+
+                pb.style.width = '100%';
+                setTimeout(() => pbc.style.display = 'none', 500);
+                log('FULL AUDIT COMPLETED. SYSTEM IS OPTIMAL.', 'succ');
+
+            } catch (err) {
+                log('Audit failed: ' + err.message, 'err');
+                pb.style.backgroundColor = 'var(--danger)';
+            }
+        }
+
+        async function triggerHeal() {
+            log('Triggering Autonomous Healer...', 'sys');
+            try {
+                const res = await fetch('/api/heal', { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    log('Healing complete. Check logs for details.', 'succ');
+                    alert('Autonomous healing finished successfully!');
+                    runFullAudit();
+                } else {
+                    log('Healing failed: ' + data.error, 'err');
+                }
+            } catch (err) {
+                log('Healing request error: ' + err.message, 'err');
+            }
+        }
+
+        // Initial small scan
+        window.onload = () => {
+            log('Awaiting user command to initiate deep scan...', 'sys');
+        };
+    </script>
+</body>
+</html>

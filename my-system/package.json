@@ -1,0 +1,51 @@
+{
+  "name": "xeyal-system",
+  "version": "1.5.1",
+  "description": "Secure, Autonomous Developer OS and Workspace Orchestrator.",
+  "main": "cli/index.js",
+  "type": "module",
+  "bin": {
+    "xeyal-system": "cli/index.js"
+  },
+  "files": [
+    "cli/",
+    "core/",
+    "commands/",
+    "plugins/",
+    "config/",
+    "main.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "start": "node cli/index.js dev",
+    "dev": "node cli/index.js dev",
+    "lint": "eslint .",
+    "tauri": "tauri",
+    "desktop": "npm run tauri dev --prefix desktop-app",
+    "build:desktop": "npm run tauri build --prefix desktop-app"
+  },
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "chalk": "^5.3.0",
+    "chokidar": "^3.6.0",
+    "clear": "^0.1.0",
+    "commander": "^12.0.0",
+    "dotenv": "^16.4.5",
+    "express": "^5.2.1",
+    "express-basic-auth": "^1.2.1",
+    "figlet": "^1.7.0",
+    "fs-extra": "^11.2.0",
+    "inquirer": "^9.2.16",
+    "node-notifier": "^10.0.1",
+    "open": "^11.0.0",
+    "socket.io": "^4.8.3",
+    "systeminformation": "^5.31.5",
+    "winston": "^3.11.0",
+    "winston-daily-rotate-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.0.0",
+    "eslint": "^8.57.0"
+  }
+}

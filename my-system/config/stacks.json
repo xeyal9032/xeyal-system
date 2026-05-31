@@ -1,0 +1,24 @@
+{
+  "CATEGORIES": {
+    "WEB": {
+      "MERN": [
+        { "name": "mongodb", "cmd": "mongod", "restart": true },
+        { "name": "backend", "cmd": "npm run start:api", "port": 5000 },
+        { "name": "frontend", "cmd": "npm run start:ui", "port": 3000 }
+      ],
+      "NEXT": [
+        { "name": "next-app", "cmd": "npm run dev", "port": 3000 }
+      ]
+    },
+    "MOBILE": {
+      "EXPO": [
+        { "name": "expo-bundler", "cmd": "npx expo start" }
+      ]
+    },
+    "UTILITY": {
+      "REDIS": [
+        { "name": "redis-server", "cmd": "redis-server" }
+      ]
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "active": "aiasisstant",
+  "projects": [
+    {
+      "addedAt": "2026-04-18T00:54:09.583Z",
+      "name": "demo-app",
+      "path": "C:\\Users\\xeyal\\Desktop\\systemx\\demo-app"
+    },
+    {
+      "addedAt": "2026-04-18T22:02:34.052Z",
+      "name": "Niderland",
+      "path": "C:\\Users\\xeyal\\Desktop\\Niderland"
+    },
+    {
+      "addedAt": "2026-04-18T22:40:34.872Z",
+      "name": "mobil",
+      "path": "C:\\Users\\xeyal\\Desktop\\mobil"
+    },
+    {
+      "addedAt": "2026-04-28T23:20:50.470Z",
+      "name": "test_healer",
+      "path": "C:\\Users\\xeyal\\Desktop\\systemx\\my-system\\test_healer"
+    },
+    {
+      "addedAt": "2026-04-28T23:33:38.527Z",
+      "name": "x3",
+      "path": "C:\\Users\\xeyal\\Desktop\\x3"
+    },
+    {
+      "addedAt": "2026-04-28T23:34:05.563Z",
+      "name": "x4",
+      "path": "C:\\Users\\xeyal\\Desktop\\x4"
+    },
+    {
+      "addedAt": "2026-04-28T23:34:25.393Z",
+      "name": "x5",
+      "path": "C:\\Users\\xeyal\\Desktop\\x5"
+    },
+    {
+      "addedAt": "2026-04-28T23:35:36.059Z",
+      "name": "x6",
+      "path": "C:\\Users\\xeyal\\Desktop\\x6"
+    },
+    {
+      "addedAt": "2026-04-28T23:39:47.354Z",
+      "name": "x8",
+      "path": "C:\\Users\\xeyal\\Desktop\\x8"
+    },
+    {
+      "name": "aiasisstant",
+      "path": "C:\\Users\\xeyal\\Desktop\\aiasisstant",
+      "addedAt": "2026-05-08T20:47:37.699Z"
+    }
+  ]
+}

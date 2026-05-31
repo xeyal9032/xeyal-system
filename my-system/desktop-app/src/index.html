@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My-System Dashboard</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <!-- ═══════════════════════════════════════ -->
+    <!-- ONBOARDING (First-launch only)         -->
+    <!-- ═══════════════════════════════════════ -->
+    <div id="onboarding-overlay" class="onboarding-overlay hidden">
+      <div class="ob-content">
+        <div class="ob-logo">⚡</div>
+        <h1 class="ob-title">XEYAL-SYSTEM</h1>
+        <p class="ob-sub">İlk kurulum yapılıyor. Bu işlem yalnızca bir kez gerçekleşir.</p>
+
+        <!-- STEP 1: Ollama Check -->
+        <div class="ob-step" id="ob-step-ollama">
+          <div class="ob-step-hdr">
+            <div class="ob-step-icon" id="ollama-icon">⏳</div>
+            <div>
+              <div class="ob-step-title">Ollama AI Motor</div>
+              <div class="ob-step-sub" id="ollama-sub">Kontrol ediliyor...</div>
+            </div>
+            <div class="ob-step-status" id="ollama-status"></div>
+          </div>
+          <div class="ob-install-btn-wrap hidden-initially" id="ollama-btn-wrap">
+            <button class="ob-btn" id="ob-download-ollama">⬇️ Ollama İndir</button>
+            <button class="ob-btn ghost" id="ob-skip-ollama">Atla →</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: AI Agents -->
+        <div class="ob-agents hidden" id="ob-agents">
+          <div class="ob-agents-title">🤖 AI Ajanlar Kuruluyor</div>
+          <div class="ob-agent-grid" id="ob-agent-grid">
+            <!-- filled by JS -->
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="ob-progress-wrap">
+          <div class="ob-progressbar"><div id="ob-prog"></div></div>
+          <div class="ob-prog-label" id="ob-prog-label">Başlatılıyor...</div>
+        </div>
+
+        <!-- Done button -->
+        <button class="ob-done-btn hidden" id="ob-done-btn">
+          Sistemi Başlat 🚀
+        </button>
+        <button class="ob-skip-all" id="ob-skip-all">Kurulumu Atla</button>
+      </div>
+    </div>
+
+    <!-- Welcome overlay -->
+    <div id="welcome-overlay" class="welcome-overlay">
+      <div class="welcome-content">
+        <div class="glow-sphere"></div>
+        <h1 class="glitch" data-text="XEYAL-SYSTEM">XEYAL-SYSTEM</h1>
+        <p class="tagline">Autonomous Developer OS</p>
+        <div class="feature-grid">
+          <div class="f-item">🛡️ Safe Mode Default</div>
+          <div class="f-item">🔒 100% Local-Only</div>
+          <div class="f-item">🧠 AI Intelligence</div>
+        </div>
+        <button id="initialize-btn" class="btn pulse-btn welcome-init-btn" onclick="document.getElementById('welcome-overlay').classList.add('fade-out'); setTimeout(() => { document.getElementById('welcome-overlay').classList.add('hidden'); document.getElementById('main-app').classList.remove('hidden'); localStorage.setItem('onboarded', 'true'); }, 500);">INITIALIZE SYSTEM</button>
+        <p class="privacy-note">Your environment, your data. No telemetry. Ever.</p>
+      </div>
+    </div>
+
+    <div class="app-container hidden" id="main-app">
+      <header data-tauri-drag-region>
+        <div class="logo">
+          <h1>MY-SYSTEM</h1>
+          <span class="badge" id="status-badge">READY</span>
+        </div>
+        <nav class="tab-nav">
+          <button class="tab-btn active" id="tab-cockpit">🚀 Cockpit</button>
+          <button class="tab-btn" id="tab-inspector">🔍 Inspector</button>
+          <button class="tab-btn" id="tab-marketplace">🔌 Marketplace</button>
+          <button class="tab-btn" id="tab-skills">🧠 Skills</button>
+          <button class="tab-btn" id="tab-forge">🔨 AI Forge</button>
+          <button class="tab-btn" id="tab-swarm">🐝 Swarm</button>
+          <button class="tab-btn" id="tab-cloud">🌐 Cloud</button>
+          <button class="tab-btn" id="tab-diagnostic">🩺 Diagnostic</button>
+          <button class="tab-btn" id="tab-about">ℹ️ About</button>
+        </nav>
+        <div class="metrics">
+          <div class="metric">CPU: <span id="cpu-load">0%</span></div>
+          <div class="metric">RAM: <span id="ram-load">0GB</span></div>
+          <div class="metric">Uptime: <span id="uptime">0m</span></div>
+        </div>
+      </header>
+
+      <!-- COCKPIT PAGE -->
+      <main id="page-cockpit">
+        <section class="controls">
+          <div class="control-card">
+            <h3>System Control</h3>
+            <div class="btn-group">
+              <button id="start-btn" class="btn primary">⚡ Launch App</button>
+              <button id="stop-btn" class="btn danger" disabled>🛑 Stop App</button>
+            </div>
+          </div>
+          <div class="control-card">
+            <h3>Project Status</h3>
+            <div class="project-info">
+              <div class="project-active">Active: <strong id="active-project-name">None</strong></div>
+              <div class="btn-group">
+                <button id="open-folder-btn" class="btn secondary">📂 Open Project</button>
+                <button id="create-project-btn" class="btn success" onclick="document.getElementById('create-modal').classList.remove('hidden')">🚀 Create Project</button>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <section class="log-container glass">
+          <div class="log-header">
+            <h3>Real-time Logs</h3>
+            <button id="clear-logs" class="btn mini secondary">Clear</button>
+          </div>
+          <div id="log-terminal" class="terminal">
+            <div class="log-line system">Waiting for deployment signal...</div>
+          </div>
+        </section>
+      </main>
+
+      <!-- INSPECTOR PAGE -->
+      <main id="page-inspector" class="hidden">
+        <div class="page-header">
+           <h2>Port Inspector</h2>
+           <button class="btn mini primary" id="refresh-ports-btn">🔄 Refresh</button>
+        </div>
+        <div id="port-list" class="port-grid">
+           <!-- Dynamic ports -->
+        </div>
+      </main>
+
+      <!-- MARKETPLACE PAGE -->
+      <main id="page-marketplace" class="hidden">
+        <div class="page-header">
+           <h2>Marketplace</h2>
+           <p>Expand your system with enterprise modules and sub-agents.</p>
+        </div>
+        <div id="plugin-list" class="plugin-grid">
+           <!-- Dynamic plugins -->
+        </div>
+      </main>
+
+      <!-- SKILLS PAGE -->
+      <main id="page-skills" class="hidden">
+        <div class="page-header">
+           <h2>Skill Hub</h2>
+           <p>Active cognitive modules currently running in the local swarm.</p>
+        </div>
+        <div id="skill-list" class="plugin-grid">
+           <!-- Dynamic skills -->
+        </div>
+      </main>
+
+      <!-- FORGE PAGE -->
+      <main id="page-forge" class="hidden">
+        <div class="forge-container">
+           <section class="forge-main glass">
+              <div class="forge-header">
+                 <div class="forge-title">
+                    <h2>AI FORGE: PROJECT SCAFFOLDER</h2>
+                    <p>Generate production-ready architectures via Local LLM.</p>
+                 </div>
+                 <div class="forge-actions">
+                    <label class="toggle-wrap">
+                      <input type="checkbox" id="forge-use-laravel-arch">
+                      <span>🛠️ Laravel Arch</span>
+                    </label>
+                    <select id="forge-intelligence-select" class="btn mini secondary" title="Select AI Intelligence Agent">
+                       <option value="auto">🧠 Auto-Select Agent</option>
+                       <optgroup label="Installed Agents" id="forge-opt-agents">
+                       </optgroup>
+                    </select>
+                 </div>
+              </div>
+
+              <div id="forge-chat-history" class="forge-chat">
+                 <div class="msg system">Forge is online. Describe your project requirements below.</div>
+              </div>
+
+              <div class="forge-input-wrap">
+                 <textarea id="forge-user-input" placeholder="e.g. Create a professional Laravel blog with auth and tailwind..."></textarea>
+                 <button id="forge-send-btn" class="btn primary">Send</button>
+              </div>
+           </section>
+
+           <aside class="forge-sidebar glass">
+              <div class="sidebar-header">
+                 <h3>Generated Assets</h3>
+                 <button id="forge-run-btn" class="btn mini success hidden">▶️ Run Project</button>
+              </div>
+              <div id="forge-file-tree" class="file-tree">
+                 <p class="empty-state">No files generated yet.</p>
+              </div>
+              <div id="forge-code-viewer" class="code-viewer hidden">
+                 <div class="viewer-header" id="forge-preview-filename">File Preview</div>
+                 <pre id="forge-code-content"></pre>
+              </div>
+           </aside>
+        </div>
+      </main>
+
+      <!-- SWARM PAGE -->
+      <main id="page-swarm" class="hidden">
+        <section class="swarm-header">
+            <div class="header-content">
+               <h2>XEYAL-SWARM: AUTONOMOUS MISSIONS</h2>
+               <p>Orchestrate multiple agents to build full-stack enterprise solutions.</p>
+            </div>
+            <div class="swarm-actions">
+               <label class="toggle-wrap">
+                  <input type="checkbox" id="swarm-use-laravel-arch">
+                  <span>🛠️ Use StomControl Arch</span>
+               </label>
+               <select id="swarm-template-select" class="btn mini secondary swarm-template-select" title="Select an AI Template">
+                  <option value="">📚 Loading Templates...</option>
+               </select>
+               <button class="btn primary" onclick="launchSwarmMission()">🚀 New Mission</button>
+            </div>
+         </section>
+
+        <div class="swarm-grid">
+           <div class="swarm-visualizer glass">
+              <div class="vis-header">LIVE AGENT INTERACTION GRAPH</div>
+              <div id="swarm-graph-container" class="graph-placeholder">
+                 <div class="pulse-ring"></div>
+                 <p>Waiting for mission initialization...</p>
+                 <button id="run-swarm-btn" class="btn primary hidden">▶️ Run Generated Project</button>
+              </div>
+           </div>
+
+           <div class="swarm-agent-list glass">
+              <h3>Active Swarm Agents</h3>
+              <div id="swarm-agents-registry" class="agent-items">
+                 <div class="agent-item">
+                    <span class="icon">🏛️</span>
+                    <div class="info"><strong>Mimar-Agent</strong><span>Architect</span></div>
+                    <div class="status-dot online"></div>
+                 </div>
+                 <div class="agent-item">
+                    <span class="icon">💻</span>
+                    <div class="info"><strong>Kodcu-Agent</strong><span>Lead Developer</span></div>
+                    <div class="status-dot online"></div>
+                 </div>
+                 <div class="agent-item">
+                    <span class="icon">🛡️</span>
+                    <div class="info"><strong>Testci-Agent</strong><span>Quality Assurance</span></div>
+                    <div class="status-dot online"></div>
+                 </div>
+              </div>
+           </div>
+        </div>
+
+        <section class="swarm-logs-container glass">
+           <h3>Swarm Communication Log</h3>
+           <div id="swarm-logs" class="terminal mini">
+              <div class="log-line system">Swarm systems standing by...</div>
+           </div>
+        </section>
+      </main>
+
+      <!-- CLOUD PAGE -->
+      <main id="page-cloud" class="hidden">
+        <section class="cloud-header">
+          <div class="cloud-title-wrap">
+             <h2>Xeyal Cloud Orchestrator</h2>
+             <p>Manage your hybrid cluster, local-cloud bridges, and SaaS intelligence.</p>
+          </div>
+          <div class="cloud-global-status" id="cloud-status-badge">SEARCHING...</div>
+          <button id="start-cloud-btn" class="btn mini primary hidden" onclick="startCloudServices()">🚀 Start Cloud Services</button>
+        </section>
+
+        <div class="cloud-grid">
+           <!-- Cloud Node Card -->
+           <div class="cloud-card glass">
+             <div class="card-icon">🌍</div>
+             <div class="card-details">
+                <h3>Global Cluster</h3>
+                <div class="stat-row"><span>Region:</span> <strong id="cloud-region">-</strong></div>
+                <div class="stat-row"><span>Nodes:</span> <strong id="cloud-nodes">-</strong></div>
+                <div class="stat-row"><span>Uptime:</span> <strong id="cloud-uptime">-</strong></div>
+             </div>
+           </div>
+
+           <!-- Infrastructure Card -->
+           <div class="cloud-card glass">
+             <div class="card-icon">💾</div>
+             <div class="card-details">
+                <h3>Infrastructure</h3>
+                <div class="stat-row">
+                  <span>Database:</span> 
+                  <div class="status-flex">
+                    <strong id="cloud-db-status" class="status-offline">OFFLINE</strong>
+                    <button class="btn mini secondary" onclick="refreshCloudStatus()" title="Retry Connection">🔄</button>
+                  </div>
+                </div>
+                <div class="stat-row"><span>Memory:</span> <strong id="cloud-memory">-</strong></div>
+                <div class="stat-row"><span>Runtime:</span> <strong id="cloud-runtime">-</strong></div>
+             </div>
+           </div>
+
+           <!-- Hybrid AI Card -->
+           <div class="cloud-card glass full-width">
+             <div class="hybrid-ai-header">
+                <div class="hybrid-title">
+                   <h3>Hybrid AI Bridge</h3>
+                   <p>Automatic load balancing between local Ollama and Cloud Gemini.</p>
+                </div>
+                <div class="bridge-status">
+                   <span class="bridge-item">OLLAMA: <strong class="text-success">READY</strong></span>
+                   <span class="bridge-divider"></span>
+                   <span class="bridge-item">GEMINI: <strong class="text-primary">LINKED</strong></span>
+                </div>
+             </div>
+           </div>
+        </div>
+
+        <section class="cloud-keys-container glass">
+           <div class="keys-header">
+              <h3>API Key Management</h3>
+              <button class="btn mini primary" onclick="generateCloudKey()">Generate New Key</button>
+           </div>
+           <div class="keys-table-wrap">
+              <table class="keys-table">
+                 <thead>
+                    <tr>
+                       <th>Name</th>
+                       <th>Key (Prefix)</th>
+                       <th>Created</th>
+                       <th>Status</th>
+                       <th>Actions</th>
+                    </tr>
+                 </thead>
+                 <tbody id="cloud-keys-list">
+                    <!-- Dynamic Cloud Keys -->
+                 </tbody>
+              </table>
+           </div>
+        </section>
+      </main>
+
+      <!-- DIAGNOSTIC PAGE -->
+      <main id="page-diagnostic" class="hidden">
+        <div class="diag-header-area glass">
+           <div class="diag-title-wrap">
+              <h2>System Diagnostics & Self-Healing</h2>
+              <p>Atomic core stress-testing and architecture integrity scan.</p>
+           </div>
+           <button class="btn primary" id="run-full-diagnostic-btn">🔍 Run Global Audit</button>
+        </div>
+
+        <div class="diag-grid-cards">
+            <!-- TEST 1: Backend -->
+            <div class="diag-card glass" id="test-backend">
+               <div class="diag-icon">⚙️</div>
+               <div class="diag-info">
+                  <h3>Backend Bridge</h3>
+                  <p>Probing Rust/Tauri command handlers and OS environment.</p>
+                  <span class="diag-status">WAITING</span>
+               </div>
+            </div>
+
+            <!-- TEST 2: File System -->
+            <div class="diag-card glass" id="test-fs">
+               <div class="diag-icon">📂</div>
+               <div class="diag-info">
+                  <h3>File System Permissions</h3>
+                  <p>Verifying write access to Desktop and workspace security.</p>
+                  <span class="diag-status">WAITING</span>
+               </div>
+            </div>
+
+            <!-- TEST 3: AI Engine -->
+            <div class="diag-card glass" id="test-ai">
+               <div class="diag-icon">🧠</div>
+               <div class="diag-info">
+                  <h3>AI Intelligence Hub</h3>
+                  <p>Probing Ollama status and model manifest integrity.</p>
+                  <span class="diag-status">WAITING</span>
+               </div>
+            </div>
+
+            <!-- TEST 4: Architecture Engine -->
+            <div class="diag-card glass" id="test-arch">
+               <div class="diag-icon">🏛️</div>
+               <div class="diag-info">
+                  <h3>Architecture Scaffolding</h3>
+                  <p>Validating StomControl template registry and Rapid Scaffolder.</p>
+                  <span class="diag-status">WAITING</span>
+               </div>
+            </div>
+        </div>
+
+        <div class="diagnostic-report-area glass mt-20">
+           <div class="report-header">
+              <h3>Live Audit Report</h3>
+              <div id="diag-overall-status" class="overall-status">SYSTEM IDLE</div>
+           </div>
+           <div id="diagnostic-log" class="terminal mini">
+              <div class="log-line system">Ready to begin diagnostic sequence...</div>
+           </div>
+        </div>
+      </main>
+
+      <!-- ABOUT PAGE -->
+      <main id="page-about" class="hidden about-page">
+        <div class="about-header">
+          <div class="about-logo-glow"></div>
+          <h2 class="about-title">XEYAL-SYSTEM</h2>
+          <p class="about-subtitle">Autonomous Developer OS &mdash; v2.0.0</p>
+          <div class="lang-switcher">
+            <button class="lang-btn active" id="lang-tr">🇹🇷 Türkçe</button>
+            <button class="lang-btn" id="lang-en">🇬🇧 English</button>
+            <button class="lang-btn" id="lang-ru">🇷🇺 Русский</button>
+          </div>
+        </div>
+
+        <!-- TURKISH -->
+        <div class="about-content" id="content-tr">
+          <div class="about-intro">
+            <p><strong>Xeyal-System</strong>, yazılım geliştiriciler için tasarlanmış akıllı bir geliştirici ortam yöneticisidir. Projelerinizi tek tıkla açar, bağımlılıklarınızı otomatik kurar ve VS Code'u sizin için başlatır. Terminalle uğraşmak zorunda kalmadan, odaklanmanız gereken tek şey kod yazmaktır.</p>
+          </div>
+          <div class="feature-cards">
+            <div class="feat-card"><h4>📂 Proje Yönetimi</h4><p>Klasörünüzü sürükleyin veya seçin. Sistem projeyi tanır, kaydeder ve her seferinde hazır hale getirir.</p></div>
+            <div class="feat-card"><h4>⚡ Çoklu Ekosistem</h4><p>npm 🟢 pip 🐍 cargo 🦀 composer 🐘 gem 💎 — manifest dosyasına göre otomatik seçer.</p></div>
+            <div class="feat-card"><h4>🧹 Akıllı Lint</h4><p>Kod kalitesini otomatik denetler, gereksiz hataları ayıklar ve temiz workspace sağlar.</p></div>
+            <div class="feat-card"><h4>🧠 AI Intelligence</h4><p>Terminal hatalarını llama3 ile yerel olarak analiz eder ve çözüm önerir.</p></div>
+          </div>
+          <div class="ecosystem-table">
+            <h3>🔧 Desteklenen Ekosistemler</h3>
+            <div class="eco-grid">
+              <div class="eco-item"><span>🟢</span> Node.js (package.json)</div>
+              <div class="eco-item"><span>🐍</span> Python (requirements.txt)</div>
+              <div class="eco-item"><span>🦀</span> Rust (Cargo.toml)</div>
+              <div class="eco-item"><span>🐘</span> PHP (composer.json)</div>
+              <div class="eco-item"><span>💎</span> Ruby (Gemfile)</div>
+            </div>
+          </div>
+
+          <!-- SYSTEM GUIDE SECTION (TR) -->
+          <div class="system-guide glass">
+            <div class="guide-header">
+              <h3>📖 Sistem Rehberi & İpuçları</h3>
+              <span class="guide-version">v2.0 Master Core</span>
+            </div>
+            <div class="guide-grid">
+              <div class="guide-card">
+                <h5>🩺 12 Katmanlı Denetim</h5>
+                <p>Sistem sağlığını doğrulamak için terminalde <code>node ULTIMATE_SYSTEM_PROBE.js</code> komutunu çalıştırın.</p>
+              </div>
+              <div class="guide-card">
+                <h5>🔨 AI Forge Gücü</h5>
+                <p>Sadece fikrinizi yazın. Sistem, 200+ şablon arasından en uygununu seçer ve saniyeler içinde inşa eder.</p>
+              </div>
+              <div class="guide-card">
+                <h5>🐝 Swarm Görevleri</h5>
+                <p>Karmaşık projeler için "Swarm" sekmesini kullanın. Birden fazla AI ajanı sizin için işbirliği yapar.</p>
+              </div>
+              <div class="guide-card">
+                <h5>🔒 %100 Yerel Veri</h5>
+                <p>Verileriniz asla dışarı çıkmaz. Tüm AI işlemleri ve dosya yönetimi kendi makinenizde mühürlüdür.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI INTELLIGENCE CENTER (TR) -->
+          <div class="ai-intel-center glass">
+            <div class="intel-header">
+              <h3>🧠 AI Intelligence Center</h3>
+              <button id="recheck-agents-btn" class="btn mini secondary">🔄 Durumu Yenile</button>
+            </div>
+            <p class="intel-sub">Sisteminizdeki AI ajanlarının kurulum durumunu buradan takip edebilirsiniz.</p>
+            <div class="intel-grid" id="about-agent-status-grid">
+                <p class="empty-state">Ajanlar taranıyor...</p>
+            </div>
+            <div class="intel-actions">
+                <button id="trigger-onboarding-btn" class="btn primary full-width">🚀 Kurulum Sihirbazını Başlat (Onboarding)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ENGLISH -->
+        <div class="about-content hidden" id="content-en">
+          <div class="about-intro">
+            <p><strong>Xeyal-System</strong> is an intelligent developer environment manager. It opens your projects with one click, auto-installs dependencies, and launches VS Code for you. Focus on writing code, not configuring terminals.</p>
+          </div>
+          <div class="feature-cards">
+            <div class="feat-card"><h4>📂 Project Management</h4><p>Drag and drop or select folders. System recognizes, saves, and readies your project every time.</p></div>
+            <div class="feat-card"><h4>⚡ Multi-Ecosystem</h4><p>npm 🟢 pip 🐍 cargo 🦀 composer 🐘 gem 💎 — auto-detects based on manifest files.</p></div>
+            <div class="feat-card"><h4>🧹 Smart Lint</h4><p>Automatically checks code quality, filters noise, and ensures a clean workspace.</p></div>
+            <div class="feat-card"><h4>🧠 AI Intelligence</h4><p>Analyzes terminal errors locally using llama3 LLM and suggests fixes.</p></div>
+          </div>
+          <div class="ecosystem-table">
+            <h3>🔧 Supported Ecosystems</h3>
+            <div class="eco-grid">
+              <div class="eco-item"><span>🟢</span> Node.js (package.json)</div>
+              <div class="eco-item"><span>🐍</span> Python (requirements.txt)</div>
+              <div class="eco-item"><span>🦀</span> Rust (Cargo.toml)</div>
+              <div class="eco-item"><span>🐘</span> PHP (composer.json)</div>
+              <div class="eco-item"><span>💎</span> Ruby (Gemfile)</div>
+            </div>
+          </div>
+
+          <!-- SYSTEM GUIDE SECTION (EN) -->
+          <div class="system-guide glass">
+            <div class="guide-header">
+              <h3>📖 System Guide & Tips</h3>
+              <span class="guide-version">v2.0 Master Core</span>
+            </div>
+            <div class="guide-grid">
+              <div class="guide-card">
+                <h5>🩺 12-Layer Audit</h5>
+                <p>To verify system health, run <code>node ULTIMATE_SYSTEM_PROBE.js</code> in your terminal.</p>
+              </div>
+              <div class="guide-card">
+                <h5>🔨 AI Forge Power</h5>
+                <p>Just describe your idea. The system picks from 200+ templates and builds it in seconds.</p>
+              </div>
+              <div class="guide-card">
+                <h5>🐝 Swarm Missions</h5>
+                <p>Use the "Swarm" tab for complex projects. Multiple AI agents will collaborate for you.</p>
+              </div>
+              <div class="guide-card">
+                <h5>🔒 100% Local Data</h5>
+                <p>Your data never leaves. All AI processing and file management are sealed on your machine.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RUSSIAN -->
+        <div class="about-content hidden" id="content-ru">
+          <div class="about-intro">
+            <p><strong>Xeyal-System</strong> — это интеллектуальный менеджер среды разработки. Он открывает ваши проекты одним кликом, автоматически устанавливает зависимости и запускает VS Code. Сосредоточьтесь на коде, а не на настройке терминала.</p>
+          </div>
+          <div class="feature-cards">
+            <div class="feat-card"><h4>📂 Управление проектами</h4><p>Перетащите или выберите папку. Система распознает, сохранит и подготовит проект для вас.</p></div>
+            <div class="feat-card"><h4>⚡ Мульти-экосистема</h4><p>npm 🟢 pip 🐍 cargo 🦀 composer 🐘 gem 💎 — выбор на основе файлов манифеста.</p></div>
+            <div class="feat-card"><h4>🧹 Умный линтинг</h4><p>Автоматически проверяет качество кода, фильтрует ошибки и поддерживает чистоту.</p></div>
+            <div class="feat-card"><h4>🧠 ИИ-Интеллект</h4><p>Локальный анализ ошибок терминала с помощью llama3 и предложение решений.</p></div>
+          </div>
+          <div class="ecosystem-table">
+            <h3>🔧 Поддерживаемые экосистемы</h3>
+            <div class="eco-grid">
+              <div class="eco-item"><span>🟢</span> Node.js (package.json)</div>
+              <div class="eco-item"><span>🐍</span> Python (requirements.txt)</div>
+              <div class="eco-item"><span>🦀</span> Rust (Cargo.toml)</div>
+              <div class="eco-item"><span>🐘</span> PHP (composer.json)</div>
+              <div class="eco-item"><span>💎</span> Ruby (Gemfile)</div>
+            </div>
+          </div>
+
+          <!-- SYSTEM GUIDE SECTION (RU) -->
+          <div class="system-guide glass">
+            <div class="guide-header">
+              <h3>📖 Руководство и Советы</h3>
+              <span class="guide-version">v2.0 Master Core</span>
+            </div>
+            <div class="guide-grid">
+              <div class="guide-card">
+                <h5>🩺 12-слойный аудит</h5>
+                <p>Для проверки здоровья системы запустите <code>node ULTIMATE_SYSTEM_PROBE.js</code> в терминале.</p>
+              </div>
+              <div class="guide-card">
+                <h5>🔨 Мощь AI Forge</h5>
+                <p>Просто опишите идею. Система выберет из 200+ шаблонов и построит проект за секунды.</p>
+              </div>
+              <div class="guide-card">
+                <h5>🐝 Миссии Swarm</h5>
+                <p>Используйте вкладку "Swarm" для сложных проектов. Несколько ИИ-агентов будут работать на вас.</p>
+              </div>
+              <div class="guide-card">
+                <h5>🔒 100% локальные данные</h5>
+                <p>Ваши данные не покидают компьютер. Все процессы ИИ и файлы запечатаны на вашем устройстве.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-footer">
+          <p>Made with ❤️ by <strong>Xeyal</strong></p>
+          <p><strong>Registry:</strong> window.FORGE_TEMPLATES</p>
+          <div class="reset-container">
+            <button id="reset-onboarding-btn" class="btn-reset-onboarding">🚨 Sistemi Yeniden Kur (Onboarding Reset)</button>
+          </div>
+        </div>
+      </main>
+
+      <footer>
+        <p>Autonomous Developer OS v2.0.0 | <span id="safe-mode-indicator">Mode: Local Only</span></p>
+      </footer>
+    </div>
+
+    <!-- CREATE MODAL -->
+    <div id="create-modal" class="modal-overlay hidden">
+      <div class="modal-content glass">
+        <div class="modal-header">
+          <h3>🚀 Scaffold New Project</h3>
+          <button id="close-modal" class="close-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <input type="text" id="new-project-name" placeholder="Project Name" />
+          <div class="template-selector">
+            <div class="template-opt active" data-template="node-express">
+              <span class="icon">🟢</span>
+              <div class="info"><strong>Node.js</strong><span>Express Backend</span></div>
+            </div>
+            <div class="template-opt" data-template="python-flask">
+              <span class="icon">🐍</span>
+              <div class="info"><strong>Python</strong><span>Flask API</span></div>
+            </div>
+            <div class="template-opt" data-template="rust-cli">
+              <span class="icon">🦀</span>
+              <div class="info"><strong>Rust</strong><span>Cargo Project</span></div>
+            </div>
+            <div class="template-opt" data-template="php-laravel">
+              <span class="icon">🐘</span>
+              <div class="info"><strong>PHP</strong><span>Laravel Framework</span></div>
+            </div>
+            <div class="template-opt" data-template="ruby-rails">
+              <span class="icon">💎</span>
+              <div class="info"><strong>Ruby</strong><span>Rails Application</span></div>
+            </div>
+          </div>
+          <button id="confirm-create" class="btn primary full-width">BUILD SYSTEM</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./templates.js"></script>
+    <script src="./templates-extra.js"></script>
+    <script src="./templates-extra2.js"></script>
+    <script src="./templates-extra3.js"></script>
+    <script src="./templates-extra4.js"></script>
+    <script src="./templates-extra5.js"></script>
+    <script src="./templates-extra6.js"></script>
+    <script src="./templates-extra7.js"></script>
+    <script src="./templates-extra8.js"></script>
+    <script src="./templates-extra9.js"></script>
+    <script src="./templates-extra10.js"></script>
+    <script src="./templates-extra11.js"></script>
+    <script src="./templates-extra12.js"></script>
+    <script src="./templates-extra13.js"></script>
+    <script src="./templates-extra14.js"></script>
+    <script src="./templates-extra15.js"></script>
+    <script src="./templates-extra16.js"></script>
+    <script src="./templates-extra17.js"></script>
+    <script src="./templates-extra18.js"></script>
+    <script src="./templates-extra19.js"></script>
+    <script src="./templates-extra20.js"></script>
+    <script src="./templates-extra21.js"></script>
+    <script src="./main.js"></script>
+  </body>
+</html>

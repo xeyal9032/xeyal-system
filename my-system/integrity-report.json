@@ -1,0 +1,168 @@
+{
+  "timestamp": "2026-04-24T21:21:02.084Z",
+  "status": "HEALTHY",
+  "checks": [
+    {
+      "name": "OS Check",
+      "status": "PASS",
+      "message": "Windows detected (x64)",
+      "details": null
+    },
+    {
+      "name": "Node.js version",
+      "status": "WARN",
+      "message": "v24.11.1 (Recommended: v20+)",
+      "details": null
+    },
+    {
+      "name": "Structure",
+      "status": "PASS",
+      "message": "Directory confirmed: cli",
+      "details": null
+    },
+    {
+      "name": "Structure",
+      "status": "PASS",
+      "message": "Directory confirmed: core",
+      "details": null
+    },
+    {
+      "name": "Structure",
+      "status": "PASS",
+      "message": "Directory confirmed: core/system",
+      "details": null
+    },
+    {
+      "name": "Structure",
+      "status": "PASS",
+      "message": "Directory confirmed: core/intelligence",
+      "details": null
+    },
+    {
+      "name": "Structure",
+      "status": "PASS",
+      "message": "Directory confirmed: core/runtime",
+      "details": null
+    },
+    {
+      "name": "Structure",
+      "status": "PASS",
+      "message": "Directory confirmed: dashboard/public",
+      "details": null
+    },
+    {
+      "name": "Structure",
+      "status": "PASS",
+      "message": "Directory confirmed: config",
+      "details": null
+    },
+    {
+      "name": "Structure",
+      "status": "PASS",
+      "message": "Directory confirmed: commands",
+      "details": null
+    },
+    {
+      "name": "Integrity",
+      "status": "PASS",
+      "message": "File confirmed: cli/index.js",
+      "details": null
+    },
+    {
+      "name": "Integrity",
+      "status": "PASS",
+      "message": "File confirmed: package.json",
+      "details": null
+    },
+    {
+      "name": "Integrity",
+      "status": "PASS",
+      "message": "File confirmed: main.js",
+      "details": null
+    },
+    {
+      "name": "Integrity",
+      "status": "PASS",
+      "message": "File confirmed: core/system/dashboard.js",
+      "details": null
+    },
+    {
+      "name": "Config: default.json",
+      "status": "PASS",
+      "message": "Valid JSON structure",
+      "details": null
+    },
+    {
+      "name": "Config: memory.json",
+      "status": "PASS",
+      "message": "Valid JSON structure",
+      "details": null
+    },
+    {
+      "name": "Config: projects.json",
+      "status": "PASS",
+      "message": "Valid JSON structure",
+      "details": null
+    },
+    {
+      "name": "Config: stacks.json",
+      "status": "PASS",
+      "message": "Valid JSON structure",
+      "details": null
+    },
+    {
+      "name": "Config: state.json",
+      "status": "PASS",
+      "message": "Valid JSON structure",
+      "details": null
+    },
+    {
+      "name": "Config: users.json",
+      "status": "PASS",
+      "message": "Valid JSON structure",
+      "details": null
+    },
+    {
+      "name": "Ollama Installation",
+      "status": "PASS",
+      "message": "Ollama is installed on PATH",
+      "details": null
+    },
+    {
+      "name": "Ollama API",
+      "status": "PASS",
+      "message": "Connected. Available models: llama3:latest, qwen3.5:latest, gemma4:latest, gemma4:31b-cloud, glm-5:cloud, minimax-m2.5:cloud, xeyalcemilli9032/nextcode-ai-pro:latest, nextcode-ai-pro:latest, mistral:7b, llama3.1:70b, minimax-m2:cloud, mistral:latest, xeyalcemilli9032/ostwindgroupai-qwen-web-expert:latest, ostwindgroupai-qwen-web-expert:latest, qwen2.5:7b, gpt-oss:120b-cloud, ostwindgroupai-web-expert-turkish:latest, xeyalcemilli9032/ostwindgroupai-professional:latest, xeyalcemilli9032/ostwindgroupai-multilingual:latest, xeyalcemilli9032/ostwindgroupai-ultra-professional:latest, xeyalcemilli9032/ostwindgroupai-web-expert:latest, llama3.2:latest, llama2:latest, qwen3:4b, gpt-oss:20b",
+      "details": null
+    },
+    {
+      "name": "AI Model (llama3)",
+      "status": "PASS",
+      "message": "Preferred model llama3 is ready.",
+      "details": null
+    },
+    {
+      "name": "Gemini Fallback",
+      "status": "PASS",
+      "message": "API Key detected. Cloud intelligence fallback is ACTIVE.",
+      "details": null
+    },
+    {
+      "name": "Dashboard Module",
+      "status": "PASS",
+      "message": "Loaded successfully.",
+      "details": null
+    },
+    {
+      "name": "Port Availability",
+      "status": "PASS",
+      "message": "Port 3000 is free.",
+      "details": null
+    },
+    {
+      "name": "CLI Logic",
+      "status": "PASS",
+      "message": "Status command returns valid JSON envelope.",
+      "details": null
+    }
+  ]
+}

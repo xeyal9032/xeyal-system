@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xeyal-System | Autonomous Developer OS</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <span class="pulse"></span>
+                    <span class="logo-text">XEYAL-SYSTEM</span>
+                </div>
+                <span class="version-badge">v1.5.1</span>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">COMMAND CENTER</div>
+                <button class="nav-btn active" id="tab-cockpit"><i class="fas fa-rocket"></i> Cockpit</button>
+                <button class="nav-btn" id="tab-explorer"><i class="fas fa-folder-tree"></i> Explorer</button>
+                <button class="nav-btn" id="tab-inspector"><i class="fas fa-microscope"></i> Inspector</button>
+
+                <div class="nav-section">INTELLIGENCE</div>
+                <button class="nav-btn" id="tab-forge"><i class="fas fa-brain"></i> AI Forge</button>
+                <button class="nav-btn" id="tab-marketplace"><i class="fas fa-plug"></i> Marketplace</button>
+
+                <div class="nav-section">SYSTEM</div>
+                <button class="nav-btn" id="tab-about"><i class="fas fa-info-circle"></i> About</button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="footer-item"><span class="label">SESSION:</span> <span id="session-id">----</span></div>
+                <div class="footer-item"><span class="label">UPTIME:</span> <span id="uptime">0s</span></div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="log-search" placeholder="Search system resources...">
+                </div>
+                <div class="actions">
+                    <div id="project-info" class="project-info hidden">
+                        <span id="active-project-name">No Project</span>
+                        <span id="active-framework-badge" class="badge">None</span>
+                    </div>
+                    <button id="create-project-btn" class="btn-action mini" title="Scaffold new project"><i class="fas fa-bolt"></i> Create</button>
+                    <button id="stop-services-btn" class="btn-stop hidden"><i class="fas fa-stop-circle"></i> Stop All</button>
+                </div>
+            </header>
+
+            <!-- 1. COCKPIT PAGE -->
+            <div id="page-cockpit" class="workspace-panel">
+                <section class="metrics-row">
+                    <div class="mini-card">
+                        <span class="card-label">CPU LOAD</span>
+                        <div class="card-body">
+                            <span class="card-val" id="cpu-val">0%</span>
+                            <div class="mini-gauge"><div class="gauge-fill" id="cpu-fill"></div></div>
+                        </div>
+                    </div>
+                    <div class="mini-card">
+                        <span class="card-label">MEMORY USAGE</span>
+                        <div class="card-body">
+                            <span class="card-val" id="mem-val">0%</span>
+                            <div class="mini-gauge"><div class="gauge-fill" id="mem-fill"></div></div>
+                        </div>
+                    </div>
+                </section>
+                <div class="terminal-container">
+                    <div class="terminal-header">
+                        <span><i class="fas fa-terminal"></i> LIVE SYSTEM STREAM</span>
+                        <button id="clear-logs" class="btn-mini" title="Clear logs" aria-label="Clear system logs"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                    <div class="log-viewport" id="log-container">
+                        <!-- Logs will stream here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. EXPLORER PAGE -->
+            <div id="page-explorer" class="workspace-panel hidden">
+                <div class="explorer-layout">
+                    <div class="explorer-sidebarCard">
+                        <div class="explorer-toolbar">
+                            <input type="text" id="project-path-input" placeholder="Project path...">
+                            <button id="pick-folder-btn" title="Pick folder"><i class="fas fa-plus"></i></button>
+                            <button id="load-path-btn" title="Load path" aria-label="Load project from path"><i class="fas fa-arrow-right"></i></button>
+                        </div>
+                        <div id="file-tree" class="file-tree"></div>
+                    </div>
+                    <div class="editor-mainCard">
+                        <div class="editor-header">
+                            <span id="active-file-name">Select a file</span>
+                            <div class="editor-actions">
+                                <button id="deep-scan-btn" class="btn-action mini"><i class="fas fa-magnifying-glass"></i> Scan</button>
+                                <button id="save-file-btn" class="btn-save hidden"><i class="fas fa-save"></i> Save</button>
+                            </div>
+                        </div>
+                        <textarea id="file-editor" spellcheck="false" placeholder="System editor ready..."></textarea>
+                        <div id="scan-results" class="scan-results hidden"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. INSPECTOR PAGE -->
+            <div id="page-inspector" class="workspace-panel hidden">
+                <div class="view-header">
+                    <h2>Network Port Inspector</h2>
+                    <p>Real-time telemetry of active ports and internal services.</p>
+                </div>
+                <div class="inspector-grid" id="port-list">
+                    <!-- Port cards will jump here -->
+                </div>
+            </div>
+
+            <!-- 4. AI FORGE PAGE -->
+            <div id="page-forge" class="workspace-panel hidden">
+                <div class="forge-container">
+                    <div class="forge-chat-panel">
+                        <div class="forge-chat-header">
+                            <h3><i class="fas fa-brain"></i> AI ASSISTANT</h3>
+                            <select id="forge-model-select" title="Select AI model" aria-label="Select AI model for Forge">
+                                <option value="llama3">Llama 3 (System Default)</option>
+                                <option value="deepseek-coder">DeepSeek Coder</option>
+                            </select>
+                        </div>
+                        <div id="forge-chat-history" class="forge-chat-history">
+                            <div class="msg ai">SYSTEM: Greetings. I am the Xeyal Forge AI. What shall we build?</div>
+                        </div>
+                        <div class="forge-input-area">
+                            <textarea id="forge-user-input" placeholder="Describe your feature..."></textarea>
+                            <button id="forge-send-btn" title="Send message" aria-label="Send message to AI assistant"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                    <div class="forge-status-panel">
+                        <span class="label">AI ENGINE STATUS</span>
+                        <div id="forge-status" class="status-online">READY</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. MARKETPLACE PAGE -->
+            <div id="page-marketplace" class="workspace-panel hidden">
+                <div class="view-header">
+                    <h2>Plugin Marketplace</h2>
+                    <p>Extend your Developer OS with professional tools.</p>
+                </div>
+                <div class="marketplace-grid" id="plugin-list">
+                    <div class="plugin-card">
+                        <div class="plugin-icon">🐳</div>
+                        <h4>Docker Orchestrator</h4>
+                        <p>Manage containers directly from Cockpit.</p>
+                        <button class="btn-action mini" disabled>Installed</button>
+                    </div>
+                    <div class="plugin-card">
+                        <div class="plugin-icon">📦</div>
+                        <h4>NPM Manager</h4>
+                        <p>Visual dependency management and updates.</p>
+                        <button class="btn-action mini" disabled>Installed</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. ABOUT PAGE -->
+            <div id="page-about" class="workspace-panel hidden about-page">
+                <div class="about-hero">
+                    <h1 class="glitch">XEYAL-SYSTEM</h1>
+                    <p>Autonomous Developer Workspace Orchestrator</p>
+                    <div class="lang-selector">
+                        <button class="lang-btn active" data-lang="tr">TR</button>
+                        <button class="lang-btn" data-lang="en">EN</button>
+                        <button class="lang-btn" data-lang="ru">RU</button>
+                    </div>
+                </div>
+                <div class="about-content" id="about-tr">
+                    <div class="about-intro">
+                        <p><strong>Xeyal-System</strong>, geliştiriciler için otonom bir çalışma ortamı sağlar. Hataları yerel AI ile çözer, portları yönetir ve iş akışınızı hızlandırır.</p>
+                    </div>
+                    <div class="feature-cards">
+                        <div class="feat-card"><h4>📂 Proje Yönetimi</h4><p>Klasörünüzü sürükleyin veya seçin. Sistem projeyi tanır ve hazır hale getirir.</p></div>
+                        <div class="feat-card"><h4>⚡ Çoklu Ekosistem</h4><p>npm, pip, cargo, composer, gem — bağımlılıkları otomatik kurar.</p></div>
+                        <div class="feat-card"><h4>🧹 Akıllı Lint</h4><p>Kod kalitesini otomatik denetler, gereksiz hataları ayıklar.</p></div>
+                        <div class="feat-card"><h4>🧠 Yapay Zeka</h4><p>Terminal hatalarını llama3 ile yerel olarak analiz eder.</p></div>
+                    </div>
+                    <div class="ecosystem-table">
+                        <h3>🔧 Desteklenen Ekosistemler</h3>
+                        <div class="eco-grid">
+                            <div class="eco-item"><span>🟢</span> Node.js (package.json)</div>
+                            <div class="eco-item"><span>🐍</span> Python (requirements.txt)</div>
+                            <div class="eco-item"><span>🦀</span> Rust (Cargo.toml)</div>
+                            <div class="eco-item"><span>🐘</span> PHP (composer.json)</div>
+                            <div class="eco-item"><span>💎</span> Ruby (Gemfile)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-content hidden" id="about-en">
+                    <div class="about-intro">
+                        <p><strong>Xeyal-System</strong> provides an autonomous workspace for developers. It resolves errors with local AI, manages ports, and accelerates your workflow.</p>
+                    </div>
+                    <div class="feature-cards">
+                        <div class="feat-card"><h4>📂 Project Management</h4><p>Drag and drop or select folders. System recognizes and prepares the project.</p></div>
+                        <div class="feat-card"><h4>⚡ Multi-Ecosystem</h4><p>npm, pip, cargo, composer, gem — auto-installs dependencies.</p></div>
+                        <div class="feat-card"><h4>🧹 Smart Lint</h4><p>Automatically checks code quality and filters unnecessary errors.</p></div>
+                        <div class="feat-card"><h4>🧠 AI Intelligence</h4><p>Analyzes terminal errors locally using llama3 LLM.</p></div>
+                    </div>
+                    <div class="ecosystem-table">
+                        <h3>🔧 Supported Ecosystems</h3>
+                        <div class="eco-grid">
+                            <div class="eco-item"><span>🟢</span> Node.js (package.json)</div>
+                            <div class="eco-item"><span>🐍</span> Python (requirements.txt)</div>
+                            <div class="eco-item"><span>🦀</span> Rust (Cargo.toml)</div>
+                            <div class="eco-item"><span>🐘</span> PHP (composer.json)</div>
+                            <div class="eco-item"><span>💎</span> Ruby (Gemfile)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-content hidden" id="about-ru">
+                    <div class="about-intro">
+                        <p><strong>Xeyal-System</strong> обеспечивает автономную рабочую среду. Решает ошибки с помощью локального ИИ, управляет портами и ускоряет ваш рабочий процесс.</p>
+                    </div>
+                    <div class="feature-cards">
+                        <div class="feat-card"><h4>📂 Управление проектами</h4><p>Перетащите или выберите папку. Система распознает и подготовит проект.</p></div>
+                        <div class="feat-card"><h4>⚡ Мульти-экосистема</h4><p>npm, pip, cargo, composer, gem — автоустановка зависимостей.</p></div>
+                        <div class="feat-card"><h4>🧹 Умный линтинг</h4><p>Автоматически проверяет качество кода и фильтрует лишние ошибки.</p></div>
+                        <div class="feat-card"><h4>🧠 Искусственный интеллект</h4><p>Локальный анализ ошибок терминала с помощью llama3.</p></div>
+                    </div>
+                    <div class="ecosystem-table">
+                        <h3>🔧 Поддерживаемые экосистемы</h3>
+                        <div class="eco-grid">
+                            <div class="eco-item"><span>🟢</span> Node.js (package.json)</div>
+                            <div class="eco-item"><span>🐍</span> Python (requirements.txt)</div>
+                            <div class="eco-item"><span>🦀</span> Rust (Cargo.toml)</div>
+                            <div class="eco-item"><span>🐘</span> PHP (composer.json)</div>
+                            <div class="eco-item"><span>💎</span> Ruby (Gemfile)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- UI Components -->
+    <div id="alert-toast" class="alert-toast hidden"></div>
+
+    <!-- Create Project Modal -->
+    <div id="create-modal" class="modal hidden">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h3>🚀 Scaffold New Project</h3>
+                <button class="btn-close-modal" onclick="document.getElementById('create-modal').classList.add('hidden')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="new-project-name" placeholder="Project Name">
+                <div class="template-selector">
+                    <div class="template-opt active" data-template="node-express">
+                        <span class="icon">🟢</span>
+                        <div class="info"><strong>Node.js</strong><span>Express Backend</span></div>
+                    </div>
+                    <div class="template-opt" data-template="python-flask">
+                        <span class="icon">🐍</span>
+                        <div class="info"><strong>Python</strong><span>Flask API</span></div>
+                    </div>
+                    <div class="template-opt" data-template="rust-cli">
+                        <span class="icon">🦀</span>
+                        <div class="info"><strong>Rust</strong><span>Cargo Project</span></div>
+                    </div>
+                </div>
+                <button id="confirm-create-btn" class="btn-action full-width">BUILD SYSTEM</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirm-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3 id="confirm-title">Confirm Action</h3>
+            <p id="confirm-msg">Are you sure?</p>
+            <div class="modal-actions">
+                <button id="confirm-yes" class="btn-action">Yes</button>
+                <button id="confirm-no" class="btn-clear btn-modal-cancel">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+Yeni Build Çıkardığınızda (2 Komut):
+powershell
+
+
+npm run build:desktop
+./package-release.ps1
+
+
+
+Dev modunda kullanım için:
+
+powershell
+
+
+./desktop-launcher.ps1
+
+
+Kullanıcıya dağıtım için:
+
+powershell
+
+npm run build:desktop
+./package-release.ps1
+# → ZIP kullanıcıya gönderilir
+
+
+
+Son güncellemeleri görmek için build komutlarını tekrar çalıştırın:
+
+powershell
+
+# Dosyaları güncelle
+$target = "$env:LOCALAPPDATA\xeyal-system"
+Copy-Item -Recurse -Force "cli", "core", "commands", "plugins", "config", "package.json" -Destination $target
+# Build ve Kurulum
+npm run build:desktop
+& "desktop-app\src-tauri\target\release\bundle\nsis\xeyal-system_1.5.1_x64-setup.exe"
+
+
+
+
+powershell -ExecutionPolicy Bypass -File .\build.ps1
+
+
+
+
+
+
+cd c:\Users\xeyal\Desktop\systemx\my-system
+powershell -ExecutionPolicy Bypass -File .\build.ps1
+

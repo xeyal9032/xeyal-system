@@ -1,0 +1,32 @@
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Secrets & Environment
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Dependencies
+node_modules/
+
+# Build outputs
+desktop-app/src-tauri/target/
+dist/
+build/
+
+# IDE files
+.vscode/
+.idea/
+.DS_Store
+
+# Local State & Temporary files
+config/memory.json
+config/state.json
+config/projects.json
+config/users.json
+tmp/
+node_notifier/
