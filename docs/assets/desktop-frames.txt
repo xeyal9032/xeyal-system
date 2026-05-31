@@ -1,0 +1,13 @@
+file 'desktop-app-welcome.png'
+duration 2.5
+file 'desktop-app-cockpit.png'
+duration 2.5
+file 'desktop-app-forge.png'
+duration 2.5
+file 'desktop-app-skills.png'
+duration 2.5
+file 'desktop-app-swarm.png'
+duration 2.5
+file 'desktop-app-cloud.png'
+duration 2.5
+file 'desktop-app-cloud.png'

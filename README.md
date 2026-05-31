@@ -14,6 +14,7 @@
 **Tek komutla geliştirme ortamını ayağa kaldır · Hataları yerel AI ile analiz et · Bulutta izle ve onar**
 
 [🚀 Hızlı Başlangıç](#-hızlı-başlangıç) ·
+[🖥️ Masaüstü EXE](#-masaüstü-uygulaması-exe) ·
 [📸 Ekran Görüntüleri](#-ekran-görüntüleri) ·
 [🏗️ Mimari](#%EF%B8%8F-mimari) ·
 [📦 Modüller](#-modüller) ·
@@ -58,7 +59,97 @@
 
 ---
 
+## 🖥️ Masaüstü Uygulaması (EXE)
+
+> **Xeyal-System'in kalbi** — Tauri 2 ile yazılmış, glassmorphism tasarımlı **Autonomous Developer OS** masaüstü paneli.  
+> Cloud dashboard'dan çok daha zengin: Cockpit, AI Forge, Swarm, Skills Hub ve yerel Ollama entegrasyonu tek pencerede.
+
+<p align="center">
+  <img src="docs/assets/desktop-app-exe.png" alt="Xeyal-System Desktop EXE — Skill Hub" width="94%"/>
+</p>
+
+<p align="center">
+  <img src="docs/assets/desktop-demo.gif" alt="Xeyal Desktop App Demo" width="94%"/>
+</p>
+
+<table>
+<tr>
+<td width="33%" align="center">
+<img src="docs/assets/desktop-app-welcome.png" width="100%"/><br/>
+<sub><b>Initialize System</b> — ilk açılış</sub>
+</td>
+<td width="33%" align="center">
+<img src="docs/assets/desktop-app-cockpit.png" width="100%"/><br/>
+<sub><b>Cockpit</b> — proje &amp; log kontrolü</sub>
+</td>
+<td width="33%" align="center">
+<img src="docs/assets/desktop-app-forge.png" width="100%"/><br/>
+<sub><b>AI Forge</b> — Ollama proje üretici</sub>
+</td>
+</tr>
+</table>
+
+### 📥 Kurulum (Windows)
+
+<table>
+<tr>
+<th width="28%">Yöntem</th>
+<th width="72%">Adımlar</th>
+</tr>
+<tr>
+<td><b>🎁 ZIP Paketi</b><br/><sub>Önerilen</sub></td>
+<td>
+
+1. `xeyal-system-v1.5.1-windows.zip` dosyasını çıkarın  
+2. `install.ps1` → sağ tık → **PowerShell ile Çalıştır**  
+3. Kurulum sihirbazı EXE'yi yükler, masaüstü kısayolu oluşturur  
+
+</td>
+</tr>
+<tr>
+<td><b>⚙️ NSIS Installer</b></td>
+<td>
+
+Doğrudan çalıştırın: `xeyal-system_1.5.1_x64-setup.exe`  
+*(build: `my-system/desktop-app/src-tauri/target/release/bundle/nsis/`)*
+
+</td>
+</tr>
+<tr>
+<td><b>👨‍💻 Geliştirici</b></td>
+<td>
+
+```bash
+cd my-system && npm install
+npm run desktop        # dev modu
+npm run build:desktop  # .exe üret
+```
+
+</td>
+</tr>
+</table>
+
+**Gereksinimler:** Windows 10/11 · Node.js ≥ 20 · Ollama (AI için, opsiyonel)
+
+📖 Detaylı kurulum: **[docs/DESKTOP.md](docs/DESKTOP.md)**
+
+[![Windows](https://img.shields.io/badge/Windows-10%2F11-0078D4?style=for-the-badge&logo=windows&logoColor=white)](docs/DESKTOP.md)
+[![Download](https://img.shields.io/badge/Kurulum-Rehberi-06b6d4?style=for-the-badge)](docs/DESKTOP.md)
+[![Tauri](https://img.shields.io/badge/Native-Tauri_2-24c8db?style=for-the-badge&logo=tauri)](https://tauri.app)
+
+---
+
 ## 📸 Ekran Görüntüleri
+
+### 🖥️ Masaüstü — Skills Hub & AI Ajanları
+
+<p align="center">
+  <img src="docs/assets/desktop-app-skills.png" alt="Xeyal Desktop Skills Hub" width="92%"/>
+</p>
+
+> OpenClaw, Claude Code, Codex ve daha fazlası — tek tıkla başlat.
+
+<br/>
 
 ### 🌐 Cloud Dashboard — Canlı Hata Monitörü
 
@@ -66,17 +157,7 @@
   <img src="docs/assets/dashboard-preview.png" alt="Xeyal Cloud Dashboard" width="92%"/>
 </p>
 
-> Glassmorphism tasarımlı React paneli: canlı hata akışı, AI analiz sonuçları, auto-patch simülasyonu ve cluster durumu.
-
-<br/>
-
-### 🖥️ Tauri Masaüstü — Forge AI Studio
-
-<p align="center">
-  <img src="docs/assets/desktop-preview.png" alt="Xeyal Desktop App" width="92%"/>
-</p>
-
-> Yerel Ollama entegrasyonu, AI ajan yönetimi, terminal çıktısı ve otonom proje oluşturma arayüzü.
+> Glassmorphism tasarımlı React paneli: canlı hata akışı, AI analiz sonuçları, auto-patch simülasyonu.
 
 <br/>
 
@@ -205,7 +286,18 @@ flowchart LR
 - **Ollama** (AI özellikleri için, opsiyonel)
 - **Rust** (Tauri desktop build için)
 
-### 1️⃣ Tüm Ekosistemi Başlat
+### 2️⃣ Masaüstü Uygulamasını Kur (Önerilen)
+
+```powershell
+cd my-system
+.\install.ps1
+# veya geliştirici modu:
+npm install && npm run desktop
+```
+
+Detaylı rehber: [docs/DESKTOP.md](docs/DESKTOP.md)
+
+### 3️⃣ Tüm Ekosistemi Başlat
 
 ```bash
 git clone https://github.com/xeyal9032/xeyal-system.git
@@ -218,7 +310,7 @@ Bu komut paralel olarak başlatır:
 - `xeyal-dashboard` → React panel
 - `my-system` → Developer OS
 
-### 2️⃣ Sadece Developer OS
+### 4️⃣ Sadece Developer OS (CLI)
 
 ```bash
 cd my-system
@@ -226,7 +318,7 @@ npm install
 npx xeyal-system dev
 ```
 
-### 3️⃣ Docker ile Cloud Stack
+### 5️⃣ Docker ile Cloud Stack
 
 ```bash
 docker compose up -d
@@ -239,7 +331,7 @@ docker compose up -d
 | PostgreSQL | localhost:5432 |
 | my-system Dashboard | http://localhost:3000 |
 
-### 4️⃣ SDK Entegrasyonu
+### 6️⃣ SDK Entegrasyonu
 
 ```javascript
 import xeyal from '@xeyal/sdk';
